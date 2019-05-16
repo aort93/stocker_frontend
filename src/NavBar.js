@@ -1,6 +1,7 @@
 import React from 'react'
 import { Grid, Menu } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 class NavBar extends React.Component {
 
@@ -12,7 +13,7 @@ class NavBar extends React.Component {
       						{this.props.currentUser
       							?
       							<Menu.Menu position="right">
-      								<Link className="item" to={`#`}>
+      								<Link className="item" to={`/profile`}>
       									{this.props.currentUser.username}
       								</Link>
       								<Menu.Item onClick={this.props.logOut}>
@@ -33,8 +34,14 @@ class NavBar extends React.Component {
       				</Grid.Column>
       			</Grid.Row>
       		)
-    
+
   }
 }
 
-export default NavBar
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser
+  }
+}
+
+export default connect(mapStateToProps)(NavBar)

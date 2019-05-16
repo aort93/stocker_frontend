@@ -30,8 +30,8 @@ class LoginPage extends React.Component {
 				alert(response.errors)
 			} else {
         console.log(response)
-				this.props.setUser(response.user)
         localStorage.setItem("token", response.token)
+				this.props.setUser(response.user)
   			this.props.history.push(`/profile`)
 			}
 		})

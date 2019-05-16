@@ -1,42 +1,32 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, withRouter } from 'react-router-dom'
 import { Grid } from 'semantic-ui-react'
 
 import ProfilePage from './ProfilePage'
 import NavBar from './NavBar'
 import LoginPage from './LoginPage'
 import SignUpPage from './SignUpPage'
+import HomePage from './HomePage'
 
 import { connect } from 'react-redux'
 
 class App extends React.Component {
 
-  // state = {
-  //   homeArticles: [],
-  //   page: 'home',
-  //   currentUser: null
-  // }
-
   logOut = () => {
 		localStorage.removeItem("token")
 		this.props.setUser(null)
-		this.props.history.push("/login")
+		this.props.history.push("/")
 	}
 
-  updateUser = (updatedUser) => {
-		this.setState({
-			currentUser: updatedUser
-		})
-	}
+  // updateUser = (updatedUser) => this.props.setUSer: updatedUser
 
 
   componentDidMount () {
     fetch('http://localhost:3000/home_articles')
     .then( r => r.json() )
     .then( data => {
-        console.log(data)
         this.props.setArticles(data)
     })
 
@@ -53,6 +43,7 @@ class App extends React.Component {
 				if (response.errors) {
 					alert(response.errors)
 				} else {
+          console.log(response)
 					this.props.setUser(response)
 				}
 			})
@@ -66,23 +57,22 @@ class App extends React.Component {
     return (
       <div >
       <Grid>
-				<NavBar currentUser={this.props.currentUser} logOut={this.logOut}/>
-				<Grid.Row centered>
+				<NavBar logOut={this.logOut}/>
 					<Switch>
             <Route path="/profile" render={(routeProps) => {
-              return <ProfilePage {...routeProps} updateUser={this.updateUser} currentUser={this.props.currentUser} />
+              return <ProfilePage {...routeProps} />
             }} />
 						<Route path="/login" render={(routeProps) => {
-							return <LoginPage {...routeProps} setCurrentUser={this.setCurrentUser}/>
+							return <LoginPage {...routeProps}/>
 						}} />
 						<Route path="/signup" render={(routeProps) => {
-							return <SignUpPage {...routeProps} setCurrentUser={this.setCurrentUser}/>
+							return <SignUpPage {...routeProps}/>
 						}} />
+            <Route path="/" render={(routeProps) => {
+              return <HomePage {...routeProps} />
+            }} />
 					</Switch>
-				</Grid.Row>
 			</Grid>
-
-        <p>{this.props.homeArticles[0] ? this.props.homeArticles[0]['headline'] : null}</p>
       </div>
   )};
 }
@@ -111,4 +101,4 @@ function mapDispatchToProps(dispatch) {
 
     }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));
