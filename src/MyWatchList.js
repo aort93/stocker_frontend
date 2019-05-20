@@ -4,9 +4,12 @@ class MyWatchList extends React.Component {
   render() {
     return (
       <div>
-        <h3>MyWatchList</h3>
-        <p> SNAP $80.90 </p>
-        <p> UBER $10.99 </p>
+      { this.props.stock ?
+        <React.Fragment>
+          <h3>Watched Stocks </h3>
+          <p>{this.props.stock.name} - {this.props.stock.symbol}</p>
+        </React.Fragment>
+        : null}
       </div>
     )
   }

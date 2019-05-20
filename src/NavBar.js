@@ -8,12 +8,15 @@ class NavBar extends React.Component {
   render() {
     return (
       <Grid.Row>
-      				<Grid.Column width={16}>
+
       					<Menu>
       						{this.props.currentUser
       							?
       							<Menu.Menu position="right">
-      								<Link className="item" to={`/profile`}>
+                      <Link className="item" to={`/`}>
+                        Stocker
+                      </Link>
+      								<Link className="item" to={`/profile/${this.props.currentUser.id}`}>
       									{this.props.currentUser.username}
       								</Link>
       								<Menu.Item onClick={this.props.logOut}>
@@ -31,7 +34,7 @@ class NavBar extends React.Component {
       							</Menu.Menu>
       						}
       					</Menu>
-      				</Grid.Column>
+      				
       			</Grid.Row>
       		)
 

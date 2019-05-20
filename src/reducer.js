@@ -1,7 +1,8 @@
 const defaultState = {
   homeArticles: [],
   page: 'home',
-  currentUser: null
+  currentUser: null,
+  currentStock: null
 }
 
 
@@ -11,6 +12,8 @@ function reducer(state = defaultState, action) {
       return {...state, currentUser: action.payload}
     case "SET_HOME_ARTICLES":
       return {...state, homeArticles: action.payload}
+    case "SELECT_STOCK":
+      return {...state, currentStock: action.payload}
     default:
     return state
   }

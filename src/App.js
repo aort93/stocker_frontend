@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { Grid } from 'semantic-ui-react'
@@ -9,6 +8,7 @@ import NavBar from './NavBar'
 import LoginPage from './LoginPage'
 import SignUpPage from './SignUpPage'
 import HomePage from './HomePage'
+import CompanyPage from './CompanyPage'
 
 import { connect } from 'react-redux'
 
@@ -43,7 +43,6 @@ class App extends React.Component {
 				if (response.errors) {
 					alert(response.errors)
 				} else {
-          console.log(response)
 					this.props.setUser(response)
 				}
 			})
@@ -58,20 +57,23 @@ class App extends React.Component {
       <div >
       <Grid>
 				<NavBar logOut={this.logOut}/>
-					<Switch>
-            <Route path="/profile" render={(routeProps) => {
-              return <ProfilePage {...routeProps} />
-            }} />
-						<Route path="/login" render={(routeProps) => {
-							return <LoginPage {...routeProps}/>
-						}} />
-						<Route path="/signup" render={(routeProps) => {
-							return <SignUpPage {...routeProps}/>
-						}} />
-            <Route path="/" render={(routeProps) => {
-              return <HomePage {...routeProps} />
-            }} />
-					</Switch>
+				<Switch>
+          {this.props.currentUser ? <Route path= {`/profile/${this.props.currentUser.id}`} render={(routeProps) => {
+            return <ProfilePage {...routeProps} />
+          }} /> : null}
+					<Route path= "/login" render={(routeProps) => {
+						return <LoginPage {...routeProps}/>
+					}} />
+					<Route path= "/signup" render={(routeProps) => {
+						return <SignUpPage {...routeProps}/>
+					}} />
+          <Route path= {`/companies/:ticker`} render={(routeProps) => {
+            return <CompanyPage {...routeProps} currentStock={routeProps.match.params.ticker} />
+          }} />
+          <Route path= "/" render={(routeProps) => {
+            return <HomePage {...routeProps} />
+          }} />
+				</Switch>
 			</Grid>
       </div>
   )};
@@ -80,7 +82,8 @@ class App extends React.Component {
 function mapStateToProps(state) {
   return {
     homeArticles: state.homeArticles,
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    currentStock: state.currentSelectedStock
   }
 }
 
@@ -90,6 +93,12 @@ function mapDispatchToProps(dispatch) {
       dispatch({
         type: "SET_HOME_ARTICLES",
         payload: homeArticles
+      })
+    },
+    setStock: (stockSymbol) => {
+      dispatch({
+        type: "SELECT_STOCK",
+        payload: stockSymbol
       })
     },
     setUser: (user) => {

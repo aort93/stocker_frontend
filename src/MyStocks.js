@@ -1,15 +1,26 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 class MyStocks extends React.Component {
   render() {
     return (
       <div>
-        <h3>Invested Stocks </h3>
-        <p> AAPL $188.88 +1.02%</p>
-        <p> FB $160.99 -0.8% </p>
+      { this.props.currentUser ?
+        <React.Fragment>
+          <h3>Invested Stocks </h3>
+          <p>{this.props.stock.name} - ${this.props.stock.price_at_purchase} - {this.props.stock.shares}</p>
+        </React.Fragment>
+        : null}
       </div>
     )
   }
 }
 
-export default MyStocks
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser
+  }
+}
+
+
+export default connect(mapStateToProps)(MyStocks);
