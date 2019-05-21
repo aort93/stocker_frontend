@@ -4,20 +4,6 @@ import { connect } from 'react-redux'
 
 
 class StockList extends React.Component {
-
-  // clickedStock = () => {
-  //   // const infoStock = localStorage.getItem("stock")
-  //   // if(infoStock) {
-  //   //   localStorage.removeItem("stock")
-  //   //   const symbol = this.props.setStock(this.props.stock.symbol)
-  //   //   localStorage.setItem("stock", symbol)
-  //   // } else {
-  //   //   this.props.setStock(this.props.stock.symbol)
-  //   // }
-  //   history.push
-  // }
-
-
   render() {
       console.log(this.props.currentStock)
     return (

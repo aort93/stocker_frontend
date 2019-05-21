@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import StockPage from './StockPage'
 import StockList from './StockList'
 
+
 class ProfilePage extends React.Component {
 
   renderStocks = () => {

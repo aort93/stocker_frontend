@@ -3,6 +3,7 @@ import HomeArticle from './HomeArticle'
 import MyStocks from './MyStocks'
 import MyWatchList from './MyWatchList'
 import { connect } from 'react-redux'
+import { v4 } from 'uuid'
 import { Bar } from 'react-chartjs-2'
 
 
@@ -48,19 +49,19 @@ class HomePage extends React.Component {
 
   renderArticles = () => {
     return this.props.homeArticles.map(article => {
-      return <HomeArticle article={article}/>
+      return <HomeArticle key={v4()} article={article}/>
     })
   }
 
   renderWatchedStocks = () => {
     return this.props.currentUser.watched_stocks.map(stock => {
-      return <MyWatchList stock={stock}/>
+      return <MyWatchList key={v4()} stock={stock}/>
     })
   }
 
   renderMyStocks = () => {
     return this.props.currentUser.stocks.map(stock => {
-      return <MyStocks stock={stock} />
+      return <MyStocks key={ v4() }stock={stock} />
     })
   }
 

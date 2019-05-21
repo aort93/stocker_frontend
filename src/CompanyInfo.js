@@ -4,14 +4,23 @@ import HomeArticle from './HomeArticle'
 
 class CompanyInfo extends React.Component {
 
-
   render() {
     console.log(this.props.currData)
     return (
       <div>
-        <h1>Company Info</h1>
-        <p>{this.props.currData.symbol}</p>
-        <p>{this.props.currData.company_name}</p>
+        {this.props.currData.company ?
+          <div>
+            <h1>Company Info</h1>
+            <img src={this.props.currData.logo.url} />
+            <p>{this.props.currData.company.symbol}</p>
+            <p>{this.props.currData.company.company_name}</p>
+            <p>{this.props.currData.company.primary_exchange}</p>
+
+
+          </div>
+          :
+          null
+        }
 
         <div>
 

@@ -1,7 +1,8 @@
 import React from 'react'
-import StockPage from './StockPage'
 import CompanyInfo from './CompanyInfo'
 import { connect } from 'react-redux'
+import StockChart from './StockChart'
+import TradeComponent from './TradeComponent'
 
 class CompanyPage extends React.Component {
   state = {
@@ -16,22 +17,21 @@ class CompanyPage extends React.Component {
     }`)
     .then(r => r.json())
     .then(data => {
+      console.log(data)
       const currData = {...data}
       this.setState({
         currData: currData
       })
     })
-
-    // fetch(`http://localhost:3000/companies/${this.props.match.params.ticker
-    // }`)
-
   }
 
   render() {
+    // console.log(this.state.currData)
     return(
       <div>
-        <StockPage />
+        <StockChart />
         <CompanyInfo currData={this.state.currData} />
+        <TradeComponent currData={this.state.currData}/>
       </div>
     )
   }
