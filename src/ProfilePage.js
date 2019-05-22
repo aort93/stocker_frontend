@@ -2,13 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import StockPage from './StockPage'
 import StockList from './StockList'
+import { v4 } from 'uuid'
 
 
 class ProfilePage extends React.Component {
 
   renderStocks = () => {
     return this.props.currentUser.stocks.map(stock => {
-      return <StockList stock={stock}/>
+      return <StockList key={v4()} stock={stock}/>
     })
   }
 
@@ -23,7 +24,8 @@ class ProfilePage extends React.Component {
             <h1>{this.props.currentUser.stocks_value}</h1>
             <table>
             <tr>
-              <th>Stock Compnay</th>
+              <th>Stock Company</th>
+              <th>Stock Symbol</th>
               <th>Price at Purchase</th>
               <th>Shares</th>
               <th>Total</th>

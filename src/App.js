@@ -1,9 +1,11 @@
 import React from 'react';
 import './App.css';
-import { Switch, Route, withRouter } from 'react-router-dom'
+import { Switch, Link, Route, withRouter } from 'react-router-dom'
 import { Grid } from 'semantic-ui-react'
+import symbol from './stocksymbols'
 
 import ProfilePage from './ProfilePage'
+import Autocomplete from './Autocomplete'
 import NavBar from './NavBar'
 import LoginPage from './LoginPage'
 import SignUpPage from './SignUpPage'
@@ -19,9 +21,6 @@ class App extends React.Component {
 		this.props.setUser(null)
 		this.props.history.push("/")
 	}
-
-  // updateUser = (updatedUser) => this.props.setUSer: updatedUser
-
 
   componentDidMount () {
     fetch('http://localhost:3000/home_articles')
@@ -52,13 +51,19 @@ class App extends React.Component {
 
 
   render() {
-    // console.log(this.props)
     return (
       <div >
       <Grid>
 				<NavBar logOut={this.logOut}/>
+        <Autocomplete
+              suggestions={
+                symbol.map(symbol => {
+                  return `${symbol.symbol} - ${symbol.name}`
+                })
+              }
+            />
 				<Switch>
-          {this.props.currentUser ? <Route path= {`/profile/${this.props.currentUser.id}`} render={(routeProps) => {
+          {this.props.currentUser ? <Route path= {`/profile/${this.props.currentUser.username}`} render={(routeProps) => {
             return <ProfilePage {...routeProps} />
           }} /> : null}
 					<Route path= "/login" render={(routeProps) => {

@@ -4,6 +4,16 @@ import { connect } from 'react-redux'
 
 class TradeComponent extends React.Component {
 
+  state = {
+    shares: 1
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      shares: e.target.value
+    })
+  }
+
   amountSharesOwned = () => {
     let count = 0;
     this.props.currentUser.stocks.forEach( stock => {
@@ -14,10 +24,31 @@ class TradeComponent extends React.Component {
     return count;
   }
 
+  buyStocks = () => {
+    console.log(this.props.currentData)
+    fetch("http://localhost:3000/purchase", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+				"Accepts": "application/json"
+      },
+      body: JSON.stringify({
+        symbol: this.props.currentStock,
+        userId: this.props.currentUser.id,
+        shares: this.state.shares
+      })
+    })
+    .then(r => r.json())
+    .then(r => {
+      console.log(r)
+    })
 
+  }
 
+  sellStocks = () => {
+    console.log('bye')
+  }
   render() {
-    console.log(this.props.currentUser)
     return (
       <div>
       {this.props.currentUser ?
@@ -31,12 +62,13 @@ class TradeComponent extends React.Component {
 
 
           <p>How many shares do you wanna buy/sell?</p>
-          <input type="text" amount="number" />
+          <input onChange={this.handleChange} type="number" name="number" value={this.state.shares} />
+          <br/>
 
-          <button>Buy</button>
-          <button>Sell</button>
+          <button onClick={this.buyStocks}>Buy</button>
+          <button onClick={this.sellStocks}>Sell</button>
 
-          <p>Funds Avavilbale: </p>
+          <p>Funds Avavilbale: {}</p>
         </div>
         : null
       }
@@ -48,7 +80,8 @@ class TradeComponent extends React.Component {
 function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
-    currentStock: state.currentStock
+    currentStock: state.currentStock,
+    userTransaction: state.userTransaction
   }
 }
 

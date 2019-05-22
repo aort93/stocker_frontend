@@ -5,11 +5,12 @@ import { connect } from 'react-redux'
 
 class StockList extends React.Component {
   render() {
-      console.log(this.props.currentStock)
+      // console.log(this.props.currentStock)
     return (
       <React.Fragment>
         <tr>
           <td>{this.props.stock.name}</td>
+          <td>{this.props.stock.symbol.toUpperCase()}</td>
           <td>{this.props.stock.price_at_purchase}</td>
           <td>{this.props.stock.shares}</td>
           <td>{this.props.stock.total_day_bought}</td>

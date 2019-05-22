@@ -8,6 +8,7 @@ class SignUpPage extends React.Component {
     first_name: "",
     last_name: "",
 		username: "",
+    cash:"",
 		password: "",
 		passwordConfirmation: "",
 	}
@@ -40,10 +41,10 @@ class SignUpPage extends React.Component {
 	}
 
 	handleSubmit = () => {
-		if(this.state.password === this.state.passwordConfirmation){
+		if(this.state.password === this.state.passwordConfirmation && this.state.cash > 200){
 			this.createUser()
 		} else {
-			alert("Passwords don't match!")
+			alert("Passwords don't match! or not enough money(less than 200)")
 		}
 	}
 
@@ -62,6 +63,10 @@ class SignUpPage extends React.Component {
 		    <Form.Field>
 		      <label>Username</label>
 		      <input onChange={this.handleChange} name="username" value={this.state.username} placeholder='Username' />
+		    </Form.Field>
+        <Form.Field>
+		      <label>Amount to Start Trading With:</label>
+		      <input onChange={this.handleChange} name="cash" type="number" value={this.state.cash} placeholder='$Cash' />
 		    </Form.Field>
 		    <Form.Field>
 		      <label>Password</label>

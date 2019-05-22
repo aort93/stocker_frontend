@@ -32,7 +32,7 @@ class LoginPage extends React.Component {
         console.log(response)
         localStorage.setItem("token", response.token)
 				this.props.setUser(response.user)
-  			this.props.history.push(`/profile`)
+  			this.props.history.push(`/profile/${response.user.username}`)
 			}
 		})
 	}

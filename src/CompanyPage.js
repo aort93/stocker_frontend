@@ -17,7 +17,7 @@ class CompanyPage extends React.Component {
     }`)
     .then(r => r.json())
     .then(data => {
-      console.log(data)
+      // console.log(data)
       const currData = {...data}
       this.setState({
         currData: currData
@@ -39,7 +39,8 @@ class CompanyPage extends React.Component {
 function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
-    currentStock: state.currentStock
+    currentStock: state.currentStock,
+    userTransaction: state.userTransaction
   }
 }
 

@@ -49,7 +49,7 @@ class HomePage extends React.Component {
 
   renderArticles = () => {
     return this.props.homeArticles.map(article => {
-      return <HomeArticle key={v4()} article={article}/>
+      return <HomeArticle key={ v4() } article={article}/>
     })
   }
 
@@ -59,6 +59,7 @@ class HomePage extends React.Component {
     })
   }
 
+  //maybe find average values of repeated stocks
   renderMyStocks = () => {
     return this.props.currentUser.stocks.map(stock => {
       return <MyStocks key={ v4() }stock={stock} />
@@ -77,7 +78,7 @@ class HomePage extends React.Component {
         </div>
 
         <div>
-          {this.props.currentUser ? this.renderMyStocks() : null}
+          {this.props.currentUser ? this.renderMyStocks() :   null}
           {this.props.currentUser ? this.renderWatchedStocks() : null}
         </div>
       </div>
