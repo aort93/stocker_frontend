@@ -37,6 +37,7 @@ class ProfilePage extends React.Component {
     return (
       <div>
         <StockPage />
+        { this.renderTableData() }
         {this.props.currentUser ?
           <div>
             <h1>{ this.props.currentUser.username }</h1>
@@ -54,7 +55,6 @@ class ProfilePage extends React.Component {
               </thead>
             <tbody>
             { this.renderStocks() }
-            { this.renderTableData() }
             </tbody>
             </table>
           </div>
