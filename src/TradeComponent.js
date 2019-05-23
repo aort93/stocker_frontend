@@ -16,16 +16,21 @@ class TradeComponent extends React.Component {
 
   amountSharesOwned = () => {
     let count = 0;
+
     this.props.currentUser.stocks.forEach( stock => {
       if(stock.symbol === this.props.currentStock) {
-        return count += stock.shares
+        return count += stock.current_shares
       }
     })
     return count;
   }
 
+  funds = () => {
+    return this.props.currentUser.cash_value + this.props.currentUser.stocks_value
+  }
+
   buyStocks = () => {
-    console.log(this.props.currentData)
+    let date = new Date()
     fetch("http://localhost:3000/purchase", {
       method: "POST",
       headers: {
@@ -33,6 +38,7 @@ class TradeComponent extends React.Component {
 				"Accepts": "application/json"
       },
       body: JSON.stringify({
+        date: date,
         symbol: this.props.currentStock,
         userId: this.props.currentUser.id,
         shares: this.state.shares
@@ -46,9 +52,27 @@ class TradeComponent extends React.Component {
   }
 
   sellStocks = () => {
-    console.log('bye')
+    let date = new Date()
+    fetch("http://localhost:3000/sell", {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+				"Accepts": "application/json"
+      },
+      body: JSON.stringify({
+        date: date,
+        symbol: this.props.currentStock,
+        userId: this.props.currentUser.id,
+        shares: this.state.shares
+      })
+    })
+    .then(r => r.json())
+    .then(r => {
+        console.log(r)
+    })
   }
   render() {
+    console.log(this.props.currentUser)
     return (
       <div>
       {this.props.currentUser ?
@@ -68,7 +92,7 @@ class TradeComponent extends React.Component {
           <button onClick={this.buyStocks}>Buy</button>
           <button onClick={this.sellStocks}>Sell</button>
 
-          <p>Funds Avavilbale: {}</p>
+          <p>Funds Avavilbale: {this.funds()}</p>
         </div>
         : null
       }

@@ -11,25 +11,60 @@ class StockPage extends React.Component {
 
 
   componentDidMount () {
-    console.log(this.props.currentUser)
-    fetch(`http://localhost:3000/user/${this.props.currentUser.id}/stock_val`, {
-      method: "POST",
-      header: {
-        "Content-Type": "application/json",
-        "Accepts": "application/json"
-      },
-      body: JSON.stringify({user_id: this.props.currentUser})
-    })
-    .then(r => r.json())
+    // console.log(this.props.currentUser)
+    // fetch(`http://localhost:3000/user/${this.props.currentUser.id}/stock_val`, {
+    //   method: "POST",
+    //   header: {
+    //     "Content-Type": "application/json",
+    //     "Accepts": "application/json"
+    //   },
+    //   body: JSON.stringify({user_id: this.props.currentUser})
+    // })
+    // .then(r => r.json())
+    // .then(data => {
+    //   // console.log(data)
+    //   this.props.setTransaction(data)
+    //   this.setState({
+    //     currentNetStockValue: {labels: [
+    //   		"cash", "stocks"
+    //   	],
+    //   	datasets: [{
+    //   		data: [data.current_cash, data.total_stock_investment],
+    //   		backgroundColor: [
+    //   		'#FF6384',
+    //   		'#36A2EB'
+    //   		],
+    //   		hoverBackgroundColor: [
+    //   		'#FF6384',
+    //   		'#36A2EB'
+    //   		]
+    //   	}]},
+    //     currentCashValue:{labels: [
+    //   		"cash", "stocks"
+    //   	],
+    //   	datasets: [{
+    //   		data: [data.current_cash, data.total_stock_investment],
+    //   		backgroundColor: [
+    //   		'#FF6384',
+    //   		'#36A2EB'
+    //   		],
+    //   		hoverBackgroundColor: [
+    //   		'#FF6384',
+    //   		'#36A2EB'
+    //   		]
+    //   	}]}
+    //   })
+    // })
+    fetch(`http://localhost:3000/users/${this.props.currentUser.id}`)
+    .then (r => r.json())
     .then(data => {
       console.log(data)
-      this.props.setTransaction(data)
       this.setState({
         currentNetStockValue: {labels: [
       		"cash", "stocks"
       	],
       	datasets: [{
-      		data: [data.current_cash, data.total_stock_investment],
+      		data: [data.cash_value, data.cash_value],
       		backgroundColor: [
       		'#FF6384',
       		'#36A2EB'
@@ -43,7 +78,7 @@ class StockPage extends React.Component {
       		"cash", "stocks"
       	],
       	datasets: [{
-      		data: [data.current_cash, data.total_stock_investment],
+      		data: [data.cash_value, data.stocks_values],
       		backgroundColor: [
       		'#FF6384',
       		'#36A2EB'
@@ -61,7 +96,7 @@ class StockPage extends React.Component {
 
 
   render() {
-    console.log(this.props)
+    // console.log(this.props)
     return (
       <div>
           <div style={{width:'50%', heigth:'50%',display:'flex'}}>

@@ -4,8 +4,12 @@ import { connect } from 'react-redux'
 
 
 class StockList extends React.Component {
+
+
+
   render() {
-      // console.log(this.props.currentStock)
+    let v = {}
+    console.log(this.props.currentUser, v)
     return (
       <React.Fragment>
         <tr>

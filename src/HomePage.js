@@ -17,6 +17,7 @@ class HomePage extends React.Component {
   }
 
     componentDidMount(){
+      console.log("here")
       let high = []
       let low = []
       let symbol = []
@@ -44,6 +45,10 @@ class HomePage extends React.Component {
                 }]}
         })
       })
+    }
+
+    componentWillUnmount() {
+      console.log("after")
     }
 
 

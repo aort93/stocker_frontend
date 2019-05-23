@@ -9,11 +9,31 @@ class ProfilePage extends React.Component {
 
   renderStocks = () => {
     return this.props.currentUser.stocks.map(stock => {
-      return <StockList key={v4()} stock={stock}/>
+      return <StockList key={ v4() } stock={stock}/>
     })
   }
 
+  renderTableData = () => {
+    let sumObj = {};
+
+    this.props.currentUser.stocks.forEach( stock => {
+      if (sumObj[stock.symbol]) {
+        sumObj[stock.symbol] += parseFloat(stock.price_at_purchase * stock.current_shares)
+      } else {
+        sumObj[stock.symbol] = parseFloat(stock.price_at_purchase *stock.current_shares)
+      }
+
+
+    })
+
+    console.log(sumObj)
+    return 'hi'
+  }
+
+
+
   render() {
+    console.log(this.props)
     return (
       <div>
         <StockPage />
@@ -21,16 +41,21 @@ class ProfilePage extends React.Component {
           <div>
             <h1>{ this.props.currentUser.username }</h1>
             <h1>{ `${this.props.currentUser.first_name} ${this.props.currentUser.last_name}`}</h1>
-            <h1>{this.props.currentUser.stocks_value}</h1>
+            <h1>{this.props.currentUser.stocks_value + this.props.currentUser.cash_value}</h1>
             <table>
-            <tr>
-              <th>Stock Company</th>
-              <th>Stock Symbol</th>
-              <th>Price at Purchase</th>
-              <th>Shares</th>
-              <th>Total</th>
-            </tr>
+              <thead>
+              <tr>
+                <th>Stock Company</th>
+                <th>Stock Symbol</th>
+                <th>Price at Purchase</th>
+                <th>Shares</th>
+                <th>Total</th>
+                </tr>
+              </thead>
+            <tbody>
             { this.renderStocks() }
+            { this.renderTableData() }
+            </tbody>
             </table>
           </div>
           : null}
@@ -41,7 +66,8 @@ class ProfilePage extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    currentStock: state.currentStock
   }
 }
 

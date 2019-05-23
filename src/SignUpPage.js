@@ -33,9 +33,9 @@ class SignUpPage extends React.Component {
 			if (response.errors){
 				alert(response.errors)
 			} else {
-				this.props.setUser(response.user)
+			  this.props.setUser(response.user)
         localStorage.setItem("token", response.token)
-  			this.props.history.push(`/profile`)
+  			this.props.history.push(`/profile/${response.user.username}`)
 			}
 		})
 	}

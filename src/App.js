@@ -75,7 +75,7 @@ class App extends React.Component {
           <Route path= {`/companies/:ticker`} render={(routeProps) => {
             return <CompanyPage {...routeProps} currentStock={routeProps.match.params.ticker} />
           }} />
-          <Route path= "/" render={(routeProps) => {
+          <Route exact path= "/" render={(routeProps) => {
             return <HomePage {...routeProps} />
           }} />
 				</Switch>

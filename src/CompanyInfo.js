@@ -5,7 +5,7 @@ import HomeArticle from './HomeArticle'
 class CompanyInfo extends React.Component {
 
   render() {
-    console.log(this.props.currData)
+    // console.log(this.props.currData)
     return (
       <div>
         {this.props.currData.company ?
