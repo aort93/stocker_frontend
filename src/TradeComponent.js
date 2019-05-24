@@ -17,16 +17,18 @@ class TradeComponent extends React.Component {
   amountSharesOwned = () => {
     let count = 0;
 
+
     this.props.currentUser.stocks.forEach( stock => {
-      if(stock.symbol === this.props.currentStock) {
+      if(stock.symbol === this.props.stockInfo.currentStock) {
         return count += stock.current_shares
       }
     })
+
     return count;
   }
 
   funds = () => {
-    return this.props.currentUser.cash_value + this.props.currentUser.stocks_value
+    return this.props.currentUser.cash_value
   }
 
   buyStocks = () => {
@@ -39,14 +41,22 @@ class TradeComponent extends React.Component {
       },
       body: JSON.stringify({
         date: date,
-        symbol: this.props.currentStock,
+        symbol: this.props.stockInfo.currentStock,
         userId: this.props.currentUser.id,
         shares: this.state.shares
       })
     })
     .then(r => r.json())
     .then(r => {
-      console.log(r)
+      if (r.errors) {
+        alert(r.errors)
+        this.props.buyStocks(this.props.currentUser)
+      } else {
+        this.props.buyStocks(r)
+      }
+      this.setState({
+        shares: 1
+      })
     })
 
   }
@@ -61,28 +71,36 @@ class TradeComponent extends React.Component {
       },
       body: JSON.stringify({
         date: date,
-        symbol: this.props.currentStock,
+        symbol: this.props.stockInfo.currentStock,
         userId: this.props.currentUser.id,
         shares: this.state.shares
       })
     })
     .then(r => r.json())
     .then(r => {
-        console.log(r)
+      if (r.errors) {
+        alert(r.errors)
+        this.props.buyStocks(this.props.currentUser)
+      } else {
+        this.props.buyStocks(r)
+      }
+      this.setState({
+        shares: 1
+      })
     })
   }
   render() {
-    console.log(this.props.currentUser)
+    // console.log(this.props.currentUser)
     return (
       <div>
       {this.props.currentUser ?
         <div>
           <h1>Trading!!!</h1>
-          <p>{this.props.currentStock}</p>
+          <p>{this.props.stockInfo.currentStock}</p>
 
           <p>Number of shares you own: {this.amountSharesOwned()}</p>
 
-          <p>Current Value: {this.props.currData.company ? this.props.currData.company.latest_price:null}</p>
+          <p>Current Value: {this.props.stockInfo ? this.props.stockInfo.company.latest_price:null}</p>
 
 
           <p>How many shares do you wanna buy/sell?</p>
@@ -105,6 +123,7 @@ function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
     currentStock: state.currentStock,
+    stockInfo: state.stockInfo,
     userTransaction: state.userTransaction
   }
 }
@@ -123,8 +142,15 @@ function mapDispatchToProps(dispatch) {
         type: "SELECT_STOCK",
         payload: stockSymbol
       })
-    }}
-
+    },
+    buyStocks: (stock) => {
+      dispatch({
+        type: "BUY_STOCK",
+        payload: stock
+      })
     }
+  }
+
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(TradeComponent)

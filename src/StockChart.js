@@ -14,6 +14,7 @@ class StockChart extends React.Component {
     date: []
   }
 
+
   getData = (time, search, title) => {
         let close = []
         let date = []
@@ -24,7 +25,7 @@ class StockChart extends React.Component {
                 data.map(p => {
                     close.push(p.close)
                     time === "1d" ? date.push(p.minute) : date.push(p.date)
-                    return
+                    return 'done'
                 })
                 this.setState({
                     data: close,
@@ -61,35 +62,37 @@ class StockChart extends React.Component {
 
 
     oneDay = () => {
-        this.getData("1d", this.state.currentStock, "one day")
+        this.getData("1d", this.props.currentStock, "one day")
     }
 
     oneMonth = () => {
-        this.getData("1m", this.state.currentStock, "one month")
+        this.getData("1m", this.props.currentStock, "one month")
     }
 
     threeMonth = () => {
-        this.getData("3m", this.state.currentStock, "three month")
+        this.getData("3m", this.props.currentStock, "three month")
     }
 
     sixMonth = () => {
-        this.getData("6m", this.state.currentStock, "six month")
+        this.getData("6m", this.props.currentStock, "six month")
     }
 
     oneYear = () => {
-        this.getData("1y", this.state.currentStock, "one year")
+        this.getData("1y", this.props.currentStock, "one year")
     }
 
     twoYear = () => {
-        this.getData("2y", this.state.currentStock, "two year")
+        this.getData("2y", this.props.currentStock, "two year")
     }
 
 
     fiveYear = () => {
-        this.getData("5y", this.state.currentStock, "five year")
+        this.getData("5y", this.props.currentStock, "five year")
     }
+
+
   render() {
-    console.log(this.props.currentStock)
+    // console.log(this.props.stockInfo)
     return (
       <div>
         <h1>Chart Goes Here</h1>
@@ -112,6 +115,7 @@ function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
     currentStock: state.currentStock,
+    stockInfo: state.stockInfo,
     userTransaction: state.userTransaction
   }
 }

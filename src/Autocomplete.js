@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Link, withRouter } from 'react-router-dom'
+import {withRouter } from 'react-router-dom'
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux"
@@ -50,9 +50,8 @@ class Autocomplete extends Component {
    });
  };
 
- // Event fired when the user clicks on a suggestion
+
  onClick = e => {
-   // Update the user input and reset the rest of the state
    this.setState({
      activeSuggestion: 0,
      filteredSuggestions: [],
@@ -63,31 +62,32 @@ class Autocomplete extends Component {
      return symbol.symbol === e.currentTarget.innerText.split(' ')[0]
    })
    this.props.setSelectedStock(match.symbol)
+   //new dispatch
+   this.props.setCurrentSymbol(match.symbol)
+   fetch(`http://localhost:3000/companies/${match.symbol}`)
+   .then(r => r.json())
+   .then (data => {
+     // console.log(data)
+     this.props.setCurrentCompany(data.company)
+     this.props.setCurrentArticle(data.company_news)
+     this.props.setLogo(data.logo)
+   })
+   // this.props.setArticle(match.symbol)
    this.props.history.push(`/companies/${e.currentTarget.innerText.split(' ')[0].toLowerCase()}`)
  };
 
- // Event fired when the user presses a key down
+
  onKeyDown = e => {
    const { activeSuggestion, filteredSuggestions } = this.state;
 
-   // User pressed the enter key, update the input and close the
-   // suggestions
-   if (e.keyCode === 13) {
-     this.setState({
-       activeSuggestion: 0,
-       showSuggestions: false,
-       userInput: filteredSuggestions[activeSuggestion]
-     });
-   }
-   // User pressed the up arrow, decrement the index
-   else if (e.keyCode === 38) {
+  if (e.keyCode === 38) {
      if (activeSuggestion === 0) {
        return;
      }
 
      this.setState({ activeSuggestion: activeSuggestion - 1 });
    }
-   // User pressed the down arrow, increment the index
+
    else if (e.keyCode === 40) {
      if (activeSuggestion - 1 === filteredSuggestions.length) {
        return;
@@ -98,6 +98,7 @@ class Autocomplete extends Component {
  };
 
  render() {
+   // console.log(this.props.stockInfo)
    const {
      onChange,
      onClick,
@@ -119,7 +120,6 @@ class Autocomplete extends Component {
            {filteredSuggestions.map((suggestion, index) => {
              let className;
 
-             // Flag the active suggestion with a class
              if (index === activeSuggestion) {
                className = 'suggestion-active';
              }
@@ -145,7 +145,7 @@ class Autocomplete extends Component {
    }
 return (
      <Fragment>
-       <form>
+
          <input
          type='text'
          onChange={onChange}
@@ -153,19 +153,38 @@ return (
          value={userInput}
          />
          {suggestionsListComponent}
-       </form>
+
      </Fragment>
    );
  }
 }
 
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser,
+    currentStock: state.currentStock,
+    stockInfo: state.stockInfo
+  }
+}
+
 function mapDispatchToProps(dispatch) {
  return {
    setSelectedStock: (stockTicker) => {
-     // dispatch is our new setState and it takes an object with a type and a payload
      dispatch({type: 'SELECT_STOCK', payload: stockTicker})
+   },
+   setCurrentSymbol: (symbol) => {
+     dispatch({type: "SET_CURRENT_STOCK", payload: symbol})
+   },
+   setCurrentArticle: (article) => {
+     dispatch({type: "SET_ARTICLE_INFO", payload: article})
+   },
+   setCurrentCompany: (company) => {
+     dispatch({type: "SET_COMPANY_INFO", payload: company})
+   },
+   setLogo: (logo) => {
+     dispatch({type: "SET_LOGO", payload: logo})
    }
- }
+  }
 }
 
-export default connect(null, mapDispatchToProps)(withRouter(Autocomplete));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Autocomplete));

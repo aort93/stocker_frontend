@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Switch, Link, Route, withRouter } from 'react-router-dom'
+import { Switch, Route, withRouter } from 'react-router-dom'
 import { Grid } from 'semantic-ui-react'
 import symbol from './stocksymbols'
 
@@ -73,7 +73,7 @@ class App extends React.Component {
 						return <SignUpPage {...routeProps}/>
 					}} />
           <Route path= {`/companies/:ticker`} render={(routeProps) => {
-            return <CompanyPage {...routeProps} currentStock={routeProps.match.params.ticker} />
+            return <CompanyPage {...routeProps} currentStock={routeProps.match.params.ticker} thisStock={this.props.stockInfo}/>
           }} />
           <Route exact path= "/" render={(routeProps) => {
             return <HomePage {...routeProps} />
@@ -88,7 +88,7 @@ function mapStateToProps(state) {
   return {
     homeArticles: state.homeArticles,
     currentUser: state.currentUser,
-    currentStock: state.currentSelectedStock
+    stockInfo: state.stockInfo
   }
 }
 

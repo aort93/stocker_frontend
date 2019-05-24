@@ -8,8 +8,7 @@ class StockList extends React.Component {
 
 
   render() {
-    let v = {}
-    console.log(this.props.currentUser, v)
+    console.log(this.props.stock)
     return (
       <React.Fragment>
         <tr>
@@ -34,7 +33,8 @@ class StockList extends React.Component {
 function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
-    currentStock: state.currentStock
+    currentStock: state.currentStock,
+    stockInfo: state.stockInfo
   }
 }
 
