@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Button} from 'semantic-ui-react'
+import { Form, Button, Container} from 'semantic-ui-react'
 import {connect} from 'react-redux'
 
 
@@ -51,33 +51,36 @@ class SignUpPage extends React.Component {
   render(){
     console.log(this.state)
 		return (
+      <Container style={{background:"black", marginTop:"12%", width:"30%"}}>
+      <h2 style={{textAlign:"center", paddingTop:"20px"}}>Sign Up</h2>
 			<Form onSubmit={this.handleSubmit}>
-      <Form.Field>
-        <label>First Name</label>
+      <Form.Field style={{margin:" 10px 50px"}}>
+        <label style={{color:"white"}}>First Name</label>
         <input onChange={this.handleChange} name="first_name" value={this.state.first_name} placeholder='first name' />
       </Form.Field>
-      <Form.Field>
-        <label>Last Name</label>
+      <Form.Field style={{margin:" 10px 50px"}}>
+        <label style={{color:"white"}}>Last Name</label>
         <input onChange={this.handleChange} name="last_name" value={this.state.last_name} placeholder='last name' />
       </Form.Field>
-		    <Form.Field>
-		      <label>Username</label>
+		    <Form.Field style={{margin:" 10px 50px"}}>
+		      <label style={{color:"white"}}>Username</label>
 		      <input onChange={this.handleChange} name="username" value={this.state.username} placeholder='Username' />
 		    </Form.Field>
-        <Form.Field>
-		      <label>Amount to Start Trading With:</label>
+        <Form.Field style={{margin:" 10px 50px"}}>
+		      <label style={{color:"white"}}>Amount to Start Trading With:</label>
 		      <input onChange={this.handleChange} name="cash" type="number" value={this.state.cash} placeholder='$Cash' />
 		    </Form.Field>
-		    <Form.Field>
-		      <label>Password</label>
+		    <Form.Field style={{margin:" 10px 50px"}}>
+		      <label style={{color:"white"}}>Password</label>
 		      <input onChange={this.handleChange} type="password" name="password" value={this.state.password} placeholder='Password' />
 		    </Form.Field>
-		    <Form.Field>
-		      <label>Password Confirmation</label>
+		    <Form.Field style={{margin:" 10px 50px"}}>
+		      <label style={{color:"white"}}>Password Confirmation</label>
 		      <input onChange={this.handleChange} type="password" name="passwordConfirmation" value={this.state.passwordConfirmation} placeholder='Password Confirmation' />
 		    </Form.Field>
-		    <Button type='submit'>Submit</Button>
+		    <div style={{textAlign:"center", paddingBottom: "10px"}}><Button type='submit'>Submit</Button></div>
 		  </Form>
+      </Container>
 		)
 	}
 }

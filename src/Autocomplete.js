@@ -70,8 +70,16 @@ class Autocomplete extends Component {
      // console.log(data)
      this.props.setCurrentCompany(data.company)
      this.props.setCurrentArticle(data.company_news)
+     this.props.setFinancials(data.financials)
      this.props.setLogo(data.logo)
    })
+
+    fetch(`https://api.iextrading.com/1.0/stock/${match.symbol}/chart/1m`)
+    .then( r => r.json())
+    .then( r => {
+      this.props.setData(r.map(chart => chart.close))
+      this.props.setDate(r.map(chart => chart.label))
+    })
    // this.props.setArticle(match.symbol)
    this.props.history.push(`/companies/${e.currentTarget.innerText.split(' ')[0].toLowerCase()}`)
  };
@@ -96,6 +104,7 @@ class Autocomplete extends Component {
      this.setState({ activeSuggestion: activeSuggestion + 1 });
    }
  };
+
 
  render() {
    // console.log(this.props.stockInfo)
@@ -151,6 +160,7 @@ return (
          onChange={onChange}
          onKeyDown={onKeyDown}
          value={userInput}
+         placeholder="Search Stocks"
          />
          {suggestionsListComponent}
 
@@ -163,7 +173,9 @@ function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
     currentStock: state.currentStock,
-    stockInfo: state.stockInfo
+    stockInfo: state.stockInfo,
+    date: state.date,
+    data: state.data
   }
 }
 
@@ -178,11 +190,35 @@ function mapDispatchToProps(dispatch) {
    setCurrentArticle: (article) => {
      dispatch({type: "SET_ARTICLE_INFO", payload: article})
    },
+   setFinancials: (financials) => {
+     dispatch({type: "SET_FINANCIALS", payload: financials})
+   },
+   setInfo: (info) => {
+     dispatch({type: "SET_INFO", payload: info})
+   },
    setCurrentCompany: (company) => {
      dispatch({type: "SET_COMPANY_INFO", payload: company})
    },
    setLogo: (logo) => {
      dispatch({type: "SET_LOGO", payload: logo})
+   },
+   setData: (data) => {
+     dispatch({
+       type: "SET_DATA",
+       payload: data
+     })
+   },
+   setDate: (date) => {
+     dispatch({
+       type: "SET_DATE",
+       payload: date
+     })
+   },
+   setTitle: (stock) => {
+     dispatch({
+       type: "SET_TITLE",
+       payload: stock
+     })
    }
   }
 }

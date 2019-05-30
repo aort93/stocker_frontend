@@ -2,6 +2,7 @@ import React from 'react'
 import HomeArticle from './HomeArticle'
 import MyStocks from './MyStocks'
 import MyWatchList from './MyWatchList'
+import { Grid, Container, Card, Feed } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { v4 } from 'uuid'
 import { Bar } from 'react-chartjs-2'
@@ -32,11 +33,11 @@ class HomePage extends React.Component {
 
         this.setState({
             data: {
-              labels: [...symbol],
-                datasets: [{
-                label: "Market Low",
-                backgroundColor: "rgba(255, 0, 255, 0.75)",
-                data: [...low]
+              labels:[...symbol],
+              datasets: [{
+              label: "Market Low",
+              backgroundColor: "rgba(255, 0, 255, 0.75)",
+              data: [...low]
                 },
                 {
                 label: "Market High",
@@ -64,29 +65,50 @@ class HomePage extends React.Component {
     })
   }
 
-  //maybe find average values of repeated stocks
   renderMyStocks = () => {
-    return this.props.currentUser.stocks.map(stock => {
+    return this.props.currentUser.array.map(stock => {
       return <MyStocks key={ v4() }stock={stock} />
     })
   }
 
 
   render() {
-    console.log(this.props.currentUser)
+    // console.log(this.props.currentUser)
     return (
-      <div>
-        <div>
+      <Grid>
+        <Grid.Column width={12}>
           <h1>Home Page</h1>
-          <Bar ref="chart" data={this.state.data} style={{width:'50%', heigth:'50%', display:'flex'}}/>
+          <Bar ref="chart" data={this.state.data} />
+          <Container text>
+          <br/><br/>
+          <h3>Today's Top News</h3>
           {this.renderArticles()}
-        </div>
+          </Container>
+        </Grid.Column>
 
-        <div>
-          {this.props.currentUser ? this.renderMyStocks() :   null}
-          {this.props.currentUser ? this.renderWatchedStocks() : null}
-        </div>
-      </div>
+        <Grid.Column width={4}>
+        <br/>
+        <Card style={{background:'#333'}}>
+          <Card.Content>
+            <Card.Header style={{color:"white"}}>Invested Stocks</Card.Header>
+          </Card.Content>
+          <Card.Content>
+            <Feed>
+              {this.props.currentUser ? this.renderMyStocks() :   null}
+            </Feed>
+          </Card.Content>
+
+          <Card.Content>
+            <Card.Header style={{color:"white"}}>My WatchList </Card.Header>
+          </Card.Content>
+          <Card.Content>
+            <Feed>
+              {this.props.currentUser ? this.renderWatchedStocks() : null}
+            </Feed>
+          </Card.Content>
+        </Card>
+        </Grid.Column>
+      </Grid>
     )
   }
 }

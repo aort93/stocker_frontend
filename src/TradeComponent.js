@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Button, Card } from 'semantic-ui-react'
 
 
 class TradeComponent extends React.Component {
@@ -17,12 +18,16 @@ class TradeComponent extends React.Component {
   amountSharesOwned = () => {
     let count = 0;
 
+    if(this.props.currentUser.stocks){
+      this.props.currentUser.stocks.forEach( stock => {
+        if(stock.symbol === this.props.stockInfo.currentStock) {
+          return count += stock.current_shares
+        }
+      })
+    } else {
+      return 0
+    }
 
-    this.props.currentUser.stocks.forEach( stock => {
-      if(stock.symbol === this.props.stockInfo.currentStock) {
-        return count += stock.current_shares
-      }
-    })
 
     return count;
   }
@@ -82,6 +87,7 @@ class TradeComponent extends React.Component {
         alert(r.errors)
         this.props.buyStocks(this.props.currentUser)
       } else {
+        console.log("hello", r)
         this.props.buyStocks(r)
       }
       this.setState({
@@ -94,7 +100,7 @@ class TradeComponent extends React.Component {
     return (
       <div>
       {this.props.currentUser ?
-        <div>
+        <div style={{textAlign:"center", marginTop:'30%'}}>
           <h1>Trading!!!</h1>
           <p>{this.props.stockInfo.currentStock}</p>
 
@@ -107,8 +113,10 @@ class TradeComponent extends React.Component {
           <input onChange={this.handleChange} type="number" name="number" value={this.state.shares} />
           <br/>
 
-          <button onClick={this.buyStocks}>Buy</button>
-          <button onClick={this.sellStocks}>Sell</button>
+          <div >
+            <Button inverted color='teal' onClick={this.buyStocks}>Buy</Button>
+            <Button inverted color='teal' onClick={this.sellStocks}>Sell</Button>
+          </div>
 
           <p>Funds Avavilbale: {this.funds()}</p>
         </div>
@@ -139,7 +147,7 @@ function mapDispatchToProps(dispatch) {
     },
     setStock: (stockSymbol) => {
       dispatch({
-        type: "SELECT_STOCK",
+        type: "SET_CURRENT_STOCK",
         payload: stockSymbol
       })
     },

@@ -1,10 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-// import HomeArticle from './HomeArticle'
+import CompanyArticles from './CompanyArticles'
+import v4 from 'uuid'
 
 class CompanyInfo extends React.Component {
 
-
+  renderArticles = () => {
+    if (this.props.companyInfo.article.news){
+      return this.props.companyInfo.article.news.map( article => {
+        return <CompanyArticles key={v4()} article={article} />
+      })
+    }
+  }
 
   render() {
     // console.log(this.props.companyInfo)
@@ -12,11 +19,13 @@ class CompanyInfo extends React.Component {
       <div>
         {this.props.companyInfo.company ?
           <div>
-            <h1>Company Info</h1>
-            <img src={this.props.companyInfo.logo.url} alt={`Image Logo for ${this.props.companyInfo.company.company_name} not available`}/>
+            <h1>Stats</h1>
             <p>{this.props.companyInfo.currentStock}</p>
             <p>{this.props.companyInfo.company.company_name}</p>
             <p>{this.props.companyInfo.company.primary_exchange}</p>
+
+            <h3>{this.props.companyInfo.company.company_name}'s Artciles For The Day</h3>
+            { this.renderArticles() }
 
 
           </div>

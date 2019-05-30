@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Button } from 'semantic-ui-react'
+import { Form, Button, Container } from 'semantic-ui-react'
 import {connect} from 'react-redux'
 
 class LoginPage extends React.Component {
@@ -29,7 +29,7 @@ class LoginPage extends React.Component {
         console.log('no good')
 				alert(response.errors)
 			} else {
-        console.log(response)
+        // console.log(response)
         localStorage.setItem("token", response.token)
 				this.props.setUser(response.user)
   			this.props.history.push(`/profile/${response.user.username}`)
@@ -39,17 +39,20 @@ class LoginPage extends React.Component {
 
 	render(){
 		return (
+			<Container style={{background:"black", marginTop:"12%", width:"30%"}}>
+			<h2 style={{textAlign:"center", paddingTop:"20px"}}>Login</h2>
 			<Form onSubmit={this.handleSubmit}>
-		    <Form.Field>
-		      <label>Username</label>
+		    <Form.Field style={{margin:" 10px 50px"}}>
+		      <label style={{color:"white"}}>Username</label>
 		      <input onChange={this.handleChange} name="username" value={this.state.username} placeholder='Username' />
 		    </Form.Field>
-		    <Form.Field>
-		      <label>Password</label>
+		    <Form.Field style={{margin:" 10px 50px"}}>
+		      <label style={{color:"white"}}>Password</label>
 		      <input onChange={this.handleChange} type="password" name="password" value={this.state.password} placeholder='Password' />
 		    </Form.Field>
-		    <Button type='submit'>Submit</Button>
+		    <div style={{textAlign:"center", paddingBottom: "10px"}}><Button type='submit'>Submit</Button></div>
 		  </Form>
+			</Container>
 		)
 	}
 }

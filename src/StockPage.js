@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Doughnut } from 'react-chartjs-2';
+import { Doughnut, Pie, Polar } from 'react-chartjs-2';
+import {Grid} from 'semantic-ui-react'
 
 class StockPage extends React.Component {
 
@@ -11,60 +12,40 @@ class StockPage extends React.Component {
 
 
   componentDidMount () {
-    // console.log(this.props.currentUser)
-    // fetch(`http://localhost:3000/user/${this.props.currentUser.id}/stock_val`, {
-    //   method: "POST",
-    //   header: {
-    //     "Content-Type": "application/json",
-    //     "Accepts": "application/json"
-    //   },
-    //   body: JSON.stringify({user_id: this.props.currentUser})
-    // })
-    // .then(r => r.json())
-    // .then(data => {
-    //   // console.log(data)
-    //   this.props.setTransaction(data)
-    //   this.setState({
-    //     currentNetStockValue: {labels: [
-    //   		"cash", "stocks"
-    //   	],
-    //   	datasets: [{
-    //   		data: [data.current_cash, data.total_stock_investment],
-    //   		backgroundColor: [
-    //   		'#FF6384',
-    //   		'#36A2EB'
-    //   		],
-    //   		hoverBackgroundColor: [
-    //   		'#FF6384',
-    //   		'#36A2EB'
-    //   		]
-    //   	}]},
-    //     currentCashValue:{labels: [
-    //   		"cash", "stocks"
-    //   	],
-    //   	datasets: [{
-    //   		data: [data.current_cash, data.total_stock_investment],
-    //   		backgroundColor: [
-    //   		'#FF6384',
-    //   		'#36A2EB'
-    //   		],
-    //   		hoverBackgroundColor: [
-    //   		'#FF6384',
-    //   		'#36A2EB'
-    //   		]
-    //   	}]}
-    //   })
-    // })
+    // console.log(this.props.data)
     fetch(`http://localhost:3000/users/${this.props.currentUser.id}`)
     .then (r => r.json())
     .then(data => {
-      console.log(data)
+      // console.log(data)
+      let total = 0
+      let ticker = []
+      let totalStocks = []
+      let background = []
+
+      const getColor = () => {
+        let str = '0123456789ABCDEF'
+        let color = "#"
+
+        for(let i = 0; i < 6; i++) {
+          color += str[Math.floor(Math.random() * 16)]
+        }
+
+        return color
+      }
+
+      data.array.forEach( stock => {
+        total += stock.total_market_val
+        ticker.push(stock.symbol)
+        totalStocks.push(stock.total_market_val)
+        background.push(getColor())
+      })
+
       this.setState({
         currentNetStockValue: {labels: [
-      		"cash", "stocks"
+      		"Cash", "Stocks"
       	],
       	datasets: [{
-      		data: [data.cash_value, data.cash_value],
+      		data: [data.cash_value, total],
       		backgroundColor: [
       		'#FF6384',
       		'#36A2EB'
@@ -75,45 +56,39 @@ class StockPage extends React.Component {
       		]
       	}]},
         currentCashValue:{labels: [
-      		"cash", "stocks"
+      		...ticker
       	],
       	datasets: [{
-      		data: [data.cash_value, data.stocks_values],
+      		data: [...totalStocks],
       		backgroundColor: [
-      		'#FF6384',
-      		'#36A2EB'
+      		...background
       		],
       		hoverBackgroundColor: [
-      		'#FF6384',
-      		'#36A2EB'
+      		...background
       		]
       	}]}
       })
     })
   }
 
-
-
-
   render() {
-    // console.log(this.props)
     return (
-      <div>
-          <div style={{width:'50%', heigth:'50%',display:'flex'}}>
-            <h2>Current Cash Pie Chart</h2>
+      <Grid>
+          <Grid.Column width={5}>
+            <h2>Portfolio Value</h2>
             <Doughnut data={this.state.currentNetStockValue} options={{
             responsive: true,
             maintainAspectRatio: true,
             }}/>
-          </div>
-          <div style={{width:'50%', heigth:'50%',display:'flex'}}>
-            <h2>Current Cash Pie Chart</h2>
-            <Doughnut data={this.state.currentCashValue} options={{
+          </Grid.Column>
+          <Grid.Column width={5}>
+            <h2>Stocks Invetsments</h2>
+            <Pie data={this.state.currentCashValue} options={{
             responsive: true,
             maintainAspectRatio: true,
             }}/>
-          </div>
-      </div>
+          </Grid.Column>
+      </Grid>
 
     )
   }

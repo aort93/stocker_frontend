@@ -1,42 +1,78 @@
 import React from 'react'
-import { Grid, Menu } from 'semantic-ui-react'
+import './App.css'
+import { Menu, Grid } from 'semantic-ui-react'
+import 'semantic-ui-css/semantic.min.css';
 import { Link } from 'react-router-dom'
+import Autocomplete from './Autocomplete'
+import symbol from './stocksymbols'
+
+
 import { connect } from 'react-redux'
+import './index.css';
 
 class NavBar extends React.Component {
 
   render() {
     return (
       <Grid.Row>
+      <Menu inverted>
+      {this.props.currentUser?
+        <React.Fragment >
+        <Grid.Column width={6}>
+        <Menu.Menu position="left" >
+        <Link className="item" to={`/`}>
+           Stocker
+        </Link>
 
-      					<Menu>
-      						{this.props.currentUser
-      							?
-      							<Menu.Menu position="right">
-                      <Link className="item" to={`/`}>
-                        Stocker
-                      </Link>
-      								<Link className="item" to={`/profile/${this.props.currentUser.username}`}>
-      									{this.props.currentUser.username}
-      								</Link>
-      								<Menu.Item onClick={this.props.logOut}>
-      									Log out
-      								</Menu.Item>
-      							</Menu.Menu>
-      							:
-      							<Menu.Menu position="right">
-      								<Link className="item" to="/login">
-      									Login
-      								</Link>
-      								<Link className="item" to="/signup">
-      									Sign Up
-      								</Link>
-      							</Menu.Menu>
-      						}
-      					</Menu>
+        </Menu.Menu>
+        </Grid.Column>
+        <Autocomplete
+              suggestions={
+                symbol.map(symbol => {
+                  return `${symbol.symbol} - ${symbol.name}`
+                })
+              }
+        />
+        <Menu.Menu position="right">
+      	<Link className="item" to={`/profile/${this.props.currentUser.username}`}>
+      			{this.props.currentUser.username}
+      	</Link>
+      	<p className="item" onClick={this.props.logOut}>
+      			Log out
+      	</p>
+        </Menu.Menu>
+        </React.Fragment>
+      	:
 
-      			</Grid.Row>
-      		)
+        <React.Fragment>
+        <Grid.Column width={6}>
+        <Menu.Menu position="left" >
+        <Link className="item" to={`/`}>
+           Stocker
+        </Link>
+
+        </Menu.Menu>
+        </Grid.Column>
+        <Autocomplete
+              suggestions={
+                symbol.map(symbol => {
+                  return `${symbol.symbol} - ${symbol.name}`
+                })
+              }
+        />
+        <Menu.Menu position="right">
+					<Link className="item" to="/login">
+						Login
+					</Link>
+					<Link className="item" to="/signup">
+						Sign Up
+					</Link>
+          </Menu.Menu>
+        </React.Fragment>
+      }
+      </Menu>
+              </Grid.Row>
+    )
 
   }
 }

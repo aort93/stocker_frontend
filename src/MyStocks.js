@@ -1,17 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Card, Feed } from 'semantic-ui-react'
 
 class MyStocks extends React.Component {
   render() {
     return (
-      <div>
+      <Feed.Event>
       { this.props.currentUser ?
-        <React.Fragment>
-          <h3>Invested Stocks </h3>
-          <p>{this.props.stock.name} - ${this.props.stock.price_at_purchase} - {this.props.stock.shares}</p>
-        </React.Fragment>
+        <Feed.Content>
+          <Feed.Summary style={{color:"white"}}>{this.props.stock.name} - ${this.props.stock.current_price} - {this.props.stock.percent_gain_loss.toFixed(3)}</Feed.Summary>
+        </Feed.Content>
         : null}
-      </div>
+      </Feed.Event>
     )
   }
 }

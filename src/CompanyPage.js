@@ -2,6 +2,7 @@ import React from 'react'
 import CompanyInfo from './CompanyInfo'
 import { connect } from 'react-redux'
 import StockChart from './StockChart'
+import { Grid, Container } from 'semantic-ui-react'
 import TradeComponent from './TradeComponent'
 
 class CompanyPage extends React.Component {
@@ -11,6 +12,7 @@ class CompanyPage extends React.Component {
     fetch(`http://localhost:3000/companies/${this.props.match.params.ticker}`)
     .then(r => r.json())
     .then(data => {
+      this.props.setFinancials(data.financials)
       this.props.setCurrentCompany(data.company)
       this.props.setCurrentArticle(data.company_news)
       this.props.setLogo(data.logo)
@@ -22,11 +24,17 @@ class CompanyPage extends React.Component {
   render() {
     // console.log("company container", this.props)
     return(
-      <div>
-        <StockChart />
-        <CompanyInfo />
-        <TradeComponent />
-      </div>
+      <Grid>
+        <Grid.Column width={12}>
+        <Container>
+          <StockChart />
+          <CompanyInfo />
+          </Container>
+        </Grid.Column>
+        <Grid.Column width={4}>
+          <TradeComponent />
+        </Grid.Column>
+      </Grid>
     )
   }
 }
@@ -60,6 +68,9 @@ function mapDispatchToProps(dispatch) {
     },
     setCurrentSymbol: (symbol) => {
       dispatch({type: "SET_CURRENT_STOCK", payload: symbol})
+    },
+    setFinancials: (financials) => {
+      dispatch({type: "SET_FINANCIALS", payload: financials})
     },
     setCurrentCompany: (company) => {
       dispatch({type: "SET_COMPANY_INFO", payload: company})
