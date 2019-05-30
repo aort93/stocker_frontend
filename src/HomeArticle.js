@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container } from 'semantic-ui-react'
+import { Container, Icon } from 'semantic-ui-react'
 
 
 class HomeArticle extends React.Component {
@@ -8,7 +8,7 @@ class HomeArticle extends React.Component {
     // console.log(this.props)
     return (
       <Container text>
-          <a target="_blank" href={this.props.article.link}>{this.props.article.headline}</a>
+          <a target="_blank" href={this.props.article.link}><Icon disabled name='newspaper' /> outline{this.props.article.headline}</a>
           <p>Date: {this.props.article.date}</p>
           <p>Summary: {this.props.article.summary}</p>
           <br />

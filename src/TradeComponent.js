@@ -98,15 +98,15 @@ class TradeComponent extends React.Component {
   render() {
     // console.log(this.props.currentUser)
     return (
-      <div>
+      <div className="sticky">
       {this.props.currentUser ?
-        <div style={{textAlign:"center", marginTop:'30%'}}>
+        <div  style={{textAlign:"center", marginTop:'30%'}}>
           <h1>Trading!!!</h1>
-          <p>{this.props.stockInfo.currentStock}</p>
+          <p>{this.props.stockInfo.currentStock.toUpperCase()}</p>
 
           <p>Number of shares you own: {this.amountSharesOwned()}</p>
 
-          <p>Current Value: {this.props.stockInfo ? this.props.stockInfo.company.latest_price:null}</p>
+          <p>Current Market Value: {this.props.stockInfo ? this.props.stockInfo.company.latest_price:null}</p>
 
 
           <p>How many shares do you wanna buy/sell?</p>

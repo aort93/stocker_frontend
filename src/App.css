@@ -106,3 +106,23 @@ input {
 .suggestions li:not(:last-of-type) {
   border-bottom: 1px solid #999;
 }
+
+.sticky {
+  position: sticky;
+  /* border: 2px solid teal; */
+  top: 25%;
+  margin: 0;
+}
+
+.sticky2 {
+  position: sticky;
+  top: 0;
+  z-index: 1
+}
+
+.sticky3 {
+  position: sticky !important;
+  top: 10%;
+  margin-left: 12% !important;
+  z-index: 1
+}

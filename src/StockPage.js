@@ -74,14 +74,14 @@ class StockPage extends React.Component {
   render() {
     return (
       <Grid>
-          <Grid.Column width={5}>
+          <Grid.Column width={7}>
             <h2>Portfolio Value</h2>
             <Doughnut data={this.state.currentNetStockValue} options={{
             responsive: true,
             maintainAspectRatio: true,
             }}/>
           </Grid.Column>
-          <Grid.Column width={5}>
+          <Grid.Column width={7}>
             <h2>Stocks Invetsments</h2>
             <Pie data={this.state.currentCashValue} options={{
             responsive: true,

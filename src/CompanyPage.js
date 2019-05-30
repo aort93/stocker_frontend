@@ -22,7 +22,7 @@ class CompanyPage extends React.Component {
 
 
   render() {
-    // console.log("company container", this.props)
+    console.log("company container", this.props)
     return(
       <Grid>
         <Grid.Column width={12}>

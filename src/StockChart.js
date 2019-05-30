@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Line } from 'react-chartjs-2'
-import { Container, Grid, Button} from "semantic-ui-react"
+import { Container, Grid, Button, Icon } from "semantic-ui-react"
 
 
 
@@ -12,7 +12,9 @@ class StockChart extends React.Component {
     chart: {},
     stock: {},
     data: [],
-    date: []
+    date: [],
+    title: '',
+    watched: false
   }
 
   componentDidMount() {
@@ -24,6 +26,7 @@ class StockChart extends React.Component {
       .then(data => {
         this.props.setData(data.map(chart => chart.close))
         this.props.setDate(data.map(chart => chart.label))
+        this.props.setTitle(this.props.match.params.ticker)
           data.map(p => {
               close.push(p.close)
               date.push(p.date)
@@ -49,6 +52,7 @@ class StockChart extends React.Component {
       .then(data => {
         this.props.setData(data.map(chart => chart.close))
         this.props.setDate(data.map(chart => chart.label))
+        this.props.setTitle(this.props.currentStock)
           data.map(p => {
               close.push(p.close)
               time === "1d" ? date.push(p.minute) : date.push(p.date)
@@ -96,23 +100,50 @@ class StockChart extends React.Component {
     }
 
     buttonWatch = () => {
-      let date = new Date()
-      fetch("http://localhost:3000/watch", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-  				"Accepts": "application/json"
-        },
-        body: JSON.stringify({
-          date: date,
-          symbol: this.props.stockInfo.currentStock,
-          userId: this.props.currentUser.id,
-        })
+      let exists = null
+
+      this.props.currentUser.stocks.forEach( stock => {
+        if(stock.symbol.toLowerCase() === this.props.stockInfo.currentStock.toLowerCase()) {
+          exists = true;
+        } else {
+          exists = false;
+        }
       })
-      .then(r => r.json())
-      .then( r =>
-        console.log(r)
-      )
+
+      if(!exists) {
+        let date = new Date()
+        fetch("http://localhost:3000/watch", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+    				"Accepts": "application/json"
+          },
+          body: JSON.stringify({
+            date: date,
+            symbol: this.props.stockInfo.currentStock,
+            userId: this.props.currentUser.id,
+          })
+        })
+        .then(r => r.json())
+        .then( r => {
+          console.log(r)
+          this.setState({
+            watched: true
+          })
+        }
+        )
+      } else {
+        console.log('already watching')
+      }
+    }
+
+    renderButton = () => {
+      if (this.state.watched) {
+        return <Button color="teal" onClick={this.buttonWatch}> Watching </Button>
+      } else {
+        return <Button inverted color="teal" onClick={this.buttonWatch}> Watch </Button>
+      }
+
     }
 
 
@@ -123,6 +154,7 @@ class StockChart extends React.Component {
         <br/><br/>
         <Grid><img src={this.props.stockInfo.logo.url}/> <h1>{this.props.stockInfo.company.company_name}</h1></Grid>
         <br/>
+
         {this.props.currentStock ? <Button inverted color='teal' onClick={this.oneDay}>1 Day</Button> : null}
         {this.props.currentStock ? <Button inverted color='teal' onClick={this.oneMonth}>1 Month</Button> : null}
         {this.props.currentStock ? <Button inverted color='teal' onClick={this.threeMonth}>3 Months</Button > : null}
@@ -131,13 +163,19 @@ class StockChart extends React.Component {
         {this.props.currentStock ? <Button inverted color='teal' onClick={this.twoYear}>2 Year</Button> : null}
         {this.props.currentStock ? <Button inverted color='teal' onClick={this.fiveYear}>5 Year</Button> : null}
 
-        <button onClick={this.buttonWatch}>Toggle Watch</button>
+        {this.props.currentUser ?
+          <div>{this.renderButton()}</div>
+        : null}
+        <br/><br/>
+
         <div style={{position:"relative", width:'100%', height: '50%' }} >
                 {this.props.currentStock ?
-                  <Line ref="chart" data={{
+                  <Line
+                    ref="chart"
+                    data={{
                     labels: this.props.date,
                     datasets: [{
-                        label: "hi",
+                        label: this.props.title.toUpperCase(),
                         backgroundColor: "rgba(75,192,192,0.4)",
                         data: this.props.data,
                         lineTension: 0.0,
@@ -149,8 +187,13 @@ class StockChart extends React.Component {
                         pointHoverBorderWidth: 2,
                         pointRadius: 0,
                         pointHitRadius: 2
-                    }]}
-                  } /> : <div className="ping">...</div>}
+                    }]}} options= {{
+        legend: {
+            labels: {fontColor: 'white'},
+            label: {fontColor: 'white'}
+        }
+    }}
+                    /> : <div className="ping">...</div>}
             </div>
       </Container>
     )

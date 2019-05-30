@@ -64,22 +64,34 @@ class ProfilePage extends React.Component {
   render() {
     console.log(this.props)
     return (
-      <div>
+      <Container>
         <br/>
         <Container>
+        <h2>Username: {this.props.currentUser.username}</h2>
+        <h4>{this.props.currentUser.first_name}  {this.props.currentUser.last_name}</h4>
         <p>Portfolio Value</p>
         { this.props.currentUser ? this.renderPortfolioValue() : null}
-        <p>Portfolio Value represents the total value of all the holdings in your account, including cash."</p>
+        <p>Portfolio Value represents the total value of all the holdings in your account, including cash.</p>
         </Container>
 
         <StockPage data={this.state.data}/>
 
         <br/><br/><br/>
+        <Container>
         <Table inverted>
           <Table.Header >
+          <Table.Row>
+            <Table.HeaderCell>Current Holding</Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+          </Table.Row>
             <Table.Row>
               <Table.HeaderCell>Company</Table.HeaderCell>
-              <Table.HeaderCell>Ticker</Table.HeaderCell>
+              <Table.HeaderCell>Symbol</Table.HeaderCell>
               <Table.HeaderCell>Stocks You Own</Table.HeaderCell>
               <Table.HeaderCell>Market Price</Table.HeaderCell>
               <Table.HeaderCell>Your Avg Price</Table.HeaderCell>
@@ -91,35 +103,46 @@ class ProfilePage extends React.Component {
             { this.renderTableData() }
           </Table.Body>
         </Table>
+        </Container>
 
 
-
+        <br/><br/><br/>
 
 
         {this.props.currentUser ?
-          <div>
-            <h1>{ `${this.props.currentUser.first_name} ${this.props.currentUser.last_name}`}</h1>
-            <h1>{ this.props.currentUser.username }</h1>
+          <Container>
 
             <Table inverted>
               <Table.Header>
               <Table.Row>
+                <Table.HeaderCell>Transaction History</Table.HeaderCell>
+                <Table.HeaderCell></Table.HeaderCell>
+                <Table.HeaderCell></Table.HeaderCell>
+                <Table.HeaderCell></Table.HeaderCell>
+                <Table.HeaderCell></Table.HeaderCell>
+                <Table.HeaderCell></Table.HeaderCell>
+                <Table.HeaderCell></Table.HeaderCell>
+                <Table.HeaderCell></Table.HeaderCell>
+              </Table.Row>
+              <Table.Row>
                 <Table.HeaderCell>Stock Company</Table.HeaderCell>
-                <Table.HeaderCell>Stock Symbol</Table.HeaderCell>
+                <Table.HeaderCell>Symbol</Table.HeaderCell>
                 <Table.HeaderCell>Price at Purchase</Table.HeaderCell>
                 <Table.HeaderCell>Trade Type</Table.HeaderCell>
                 <Table.HeaderCell>Purchase/Sell Date</Table.HeaderCell>
                 <Table.HeaderCell>Quantity Purchased/Sold</Table.HeaderCell>
                 <Table.HeaderCell>Total</Table.HeaderCell>
+                <Table.HeaderCell></Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
+
             <Table.Body>
             { this.renderTransactions() }
             </Table.Body>
             </Table>
-          </div>
+          </Container>
           : null}
-      </div>
+      </Container>
     )
   }
 }

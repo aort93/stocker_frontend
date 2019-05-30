@@ -2,7 +2,7 @@ import React from 'react'
 import HomeArticle from './HomeArticle'
 import MyStocks from './MyStocks'
 import MyWatchList from './MyWatchList'
-import { Grid, Container, Card, Feed } from 'semantic-ui-react'
+import { Grid, Container, Card, Feed, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { v4 } from 'uuid'
 import { Bar } from 'react-chartjs-2'
@@ -77,7 +77,7 @@ class HomePage extends React.Component {
     return (
       <Grid>
         <Grid.Column width={12}>
-          <h1>Home Page</h1>
+          <h1>Today's Market High and Low</h1>
           <Bar ref="chart" data={this.state.data} />
           <Container text>
           <br/><br/>
@@ -88,7 +88,7 @@ class HomePage extends React.Component {
 
         <Grid.Column width={4}>
         <br/>
-        <Card style={{background:'#333'}}>
+        <Card className="sticky3" style={{background:'#333'}}>
           <Card.Content>
             <Card.Header style={{color:"white"}}>Invested Stocks</Card.Header>
           </Card.Content>

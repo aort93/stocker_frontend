@@ -14,7 +14,7 @@ class NavBar extends React.Component {
 
   render() {
     return (
-      <Grid.Row>
+      <Grid.Row className="sticky2">
       <Menu inverted>
       {this.props.currentUser?
         <React.Fragment >
