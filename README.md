@@ -1,4 +1,36 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Stocker App
+An stock trading simulation app with real time stock market imforamtion such as current prices, close price, news, etc using IEX's api. This app was built for users to create their own portfolio with an amount they choose and see how they would do if they really invested money in that stock. This web app can also just be used to get links to trending stock market news.
+
+## Backend link
+https://github.com/aort93/stocker_backend
+
+## Update
+On June 1, 2019, IEX changed their public api (https://api.iextrading.com/1.0/stock) to a cloud based api. Functionality in Stocker will temporarily be down until api endpoints are updated to correspond with their new cloud based api.
+
+## Motivation
+This project was built in order for people who are new to trading, like me,  can practive and learn trading without it affecting them financially. In the future i hope to add real time chat so users can commmunicate with other users and discuss finance and the stock market.
+
+## Tech/Framework Used
+Built With: 
+- React/Redux frontend
+- Ruby on Rails backend
+- semantic-ui-react
+- IEX trading api 
+- Chart js2 
+- Stock Quote gem
+
+## Features
+- Search for companies by ticker symbol or company name
+- Obtain real-time trade price pulled from external API
+- Visualize historical stock prices for up to five years
+- Buy and sell company shares based on current market-price
+- Watch companies to add to a user's Watchlist
+- See financial portfolio on account page
+- Read news articles on publicly traded companies
+
+
+
+
 
 ## Available Scripts
 
